@@ -1,20 +1,31 @@
 package com.lucbecker.orderservice.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.lucbecker.orderservice.domain.enums.Prioridade;
 import com.lucbecker.orderservice.domain.enums.Status;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+@Entity
 public class OS {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime dataAbertura;
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime dataFechamento;
     private Integer prioridade;
     private String observacoes;
     private Integer status;
+    @ManyToOne
+    @JoinColumn(name = "tecnico_id")
     private Tecnico tecnico;
+    @ManyToOne
+    @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
     public OS() {
