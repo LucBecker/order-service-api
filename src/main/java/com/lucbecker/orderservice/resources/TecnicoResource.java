@@ -1,6 +1,7 @@
 package com.lucbecker.orderservice.resources;
 
 import com.lucbecker.orderservice.domain.Tecnico;
+import com.lucbecker.orderservice.dto.TecnicoDTO;
 import com.lucbecker.orderservice.services.TecnicoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,8 +17,8 @@ public class TecnicoResource {
     private TecnicoService service;
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Tecnico> findById(@PathVariable Integer id){
-        Tecnico obj = service.findById(id);
-        return ResponseEntity.ok().body(obj);
+    public ResponseEntity<TecnicoDTO> findById(@PathVariable Integer id){
+        TecnicoDTO objDTO = new TecnicoDTO(service.findById(id));
+        return ResponseEntity.ok().body(objDTO);
     }
 }
