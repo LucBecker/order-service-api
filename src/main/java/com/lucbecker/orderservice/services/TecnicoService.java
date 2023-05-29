@@ -1,6 +1,7 @@
 package com.lucbecker.orderservice.services;
 
 import com.lucbecker.orderservice.domain.Tecnico;
+import com.lucbecker.orderservice.dto.TecnicoDTO;
 import com.lucbecker.orderservice.repositories.TecnicoRepository;
 import com.lucbecker.orderservice.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,5 +24,9 @@ public class TecnicoService {
 
     public List<Tecnico> findAll() {
         return repository.findAll();
+    }
+
+    public Tecnico create(TecnicoDTO objDTO){
+        return repository.save(new Tecnico(null, objDTO.getNome(), objDTO.getCpf(), objDTO.getTelefone()));
     }
 }
