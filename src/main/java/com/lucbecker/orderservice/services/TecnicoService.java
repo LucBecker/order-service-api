@@ -1,7 +1,9 @@
 package com.lucbecker.orderservice.services;
 
+import com.lucbecker.orderservice.domain.Pessoa;
 import com.lucbecker.orderservice.domain.Tecnico;
 import com.lucbecker.orderservice.dto.TecnicoDTO;
+import com.lucbecker.orderservice.repositories.PessoaRepository;
 import com.lucbecker.orderservice.repositories.TecnicoRepository;
 import com.lucbecker.orderservice.services.exceptions.DataIntegrityViolationException;
 import com.lucbecker.orderservice.services.exceptions.ObjectNotFoundException;
@@ -16,6 +18,8 @@ public class TecnicoService {
 
     @Autowired
     private TecnicoRepository repository;
+    @Autowired
+    private PessoaRepository pessoaRepository;
 
     public Tecnico findById(Integer id) {
         Optional<Tecnico> obj = repository.findById(id);
@@ -56,8 +60,8 @@ public class TecnicoService {
         repository.deleteById(id);
     }
 
-    private Tecnico findByCPF(TecnicoDTO objDTO){
-        Tecnico obj = repository.findByCPF(objDTO.getCpf());
+    private Pessoa findByCPF(TecnicoDTO objDTO){
+        Pessoa obj = pessoaRepository.findByCPF(objDTO.getCpf());
         if(obj != null){
             return obj;
         }
