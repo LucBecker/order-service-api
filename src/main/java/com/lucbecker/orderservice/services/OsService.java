@@ -1,6 +1,10 @@
 package com.lucbecker.orderservice.services;
 
+import com.lucbecker.orderservice.domain.Cliente;
 import com.lucbecker.orderservice.domain.OS;
+import com.lucbecker.orderservice.domain.Tecnico;
+import com.lucbecker.orderservice.domain.enums.Prioridade;
+import com.lucbecker.orderservice.domain.enums.Status;
 import com.lucbecker.orderservice.dto.OSDTO;
 import com.lucbecker.orderservice.repositories.OSRepository;
 import com.lucbecker.orderservice.services.exceptions.ObjectNotFoundException;
@@ -16,6 +20,12 @@ public class OsService {
     @Autowired
     private OSRepository repository;
 
+    @Autowired
+    private TecnicoService tecnicoService;
+
+    @Autowired
+    private ClienteService clienteService;
+
     public OS findById(Integer id){
         Optional<OS> obj = repository.findById(id);
         return obj.orElseThrow(() -> new ObjectNotFoundException(
@@ -24,5 +34,24 @@ public class OsService {
 
     public List<OS> findAll() {
         return repository.findAll();
+    }
+
+    public OS create(OSDTO objDTO) {
+        return fromDTO(objDTO);
+    }
+
+    private OS fromDTO(OSDTO obj){
+        OS newObj = new OS();
+        newObj.setId(obj.getId());
+        newObj.setObservacoes(obj.getObservacoes());
+        newObj.setPrioridade(Prioridade.toEnum(obj.getPrioridade()));
+        newObj.setStatus(Status.toEnum(obj.getStatus()));
+
+        Tecnico tec = tecnicoService.findById(obj.getTecnico());
+        Cliente cli = clienteService.findById(obj.getCliente());
+
+        newObj.setTecnico(tec);
+        newObj.setCliente(cli);
+        return repository.save(newObj);
     }
 }
